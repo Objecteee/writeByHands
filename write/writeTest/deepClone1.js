@@ -5,17 +5,19 @@ function deepClone(source,hash=new WeakMap()){
     if(source instanceof RegExp) return new RegExp(source.source, source.flags);
     if(source instanceof Map){
         const map=new Map();
-        map.set(source,map);
-        source.forEach((key,value)=>{
+        hash.set(source,map);
+        source.forEach((value,key)=>{
             map.set(deepClone(key,hash),deepClone(value,hash));
         })
+        return map;
     }
     if(source instanceof Set){
         const set  =new Set();
-        set.add(source,set);
+        hash.set(source);
         set.forEach(value=>{
             set.add(deepClone(value,hash));
-        })
+        }) 
+        return set;
     }
     const cloned=Array.isArray(source)?[]:Object.create(Object.getPrototypeOf(source));
     hash.set(source,cloned);
