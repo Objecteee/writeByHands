@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 const TodoList = () => {
   // 1. 定义状态：数组存储对象 { id, text, completed }
   const [todos, setTodos] = useState([]);
