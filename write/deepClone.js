@@ -1,33 +1,31 @@
-/**
- * 深拷贝实现
- * @param {Object} target 目标对象
- * @param {WeakMap} map 用于存储已拷贝过的对象，解决循环引用
- */
-function deepClone(target, map = new WeakMap()) {
-    // 1. 处理原始类型（Number, String, Boolean, null, undefined, Symbol）
-    if (typeof target !== 'object' || target === null) {
-        return target;
-    }
+function deepClone(source, hash = new WeakMap()) {
+  if (typeof source !== 'object' || source === null) return source;
 
-    // 2. 处理特殊对象类型：日期和正则
-    if (target instanceof Date) return new Date(target);
-    if (target instanceof RegExp) return new RegExp(target);
+  if (hash.has(source)) return hash.get(source);
 
-    // 3. 检查循环引用：如果已经拷贝过，直接返回之前存储的对象
-    if (map.has(target)) {
-        return map.get(target);
-    }
-
-    // 4. 初始化克隆对象（兼容数组和普通对象）
-    const cloneTarget = Array.isArray(target) ? [] : {};
-
-    // 5. 存储当前对象到 map
-    map.set(target, cloneTarget);
-
-    // 6. 递归拷贝属性（使用 Reflect.ownKeys 处理 Symbol 键名）
-    Reflect.ownKeys(target).forEach(key => {
-        cloneTarget[key] = deepClone(target[key], map);
+  if (source instanceof Date) return new Date(source);
+  if (source instanceof RegExp) return new RegExp(source.source, source.flags);
+  if (source instanceof Map) {
+    const cloned = new Map();
+    hash.set(source, cloned);
+    source.forEach((value, key) => {
+      cloned.set(deepClone(key, hash), deepClone(value, hash));
     });
+    return cloned;
+  }
+  if (source instanceof Set) {
+    const cloned = new Set();
+    hash.set(source, cloned);
+    source.forEach(value => cloned.add(deepClone(value, hash)));
+    return cloned;
+  }
 
-    return cloneTarget;
+  const cloned = Array.isArray(source) ? [] : {};
+  hash.set(source, cloned);
+
+  for (let key in Object.keys(source)) {
+    cloned[key] = deepClone(source[key], hash)
+  }
+
+  return cloned;
 }

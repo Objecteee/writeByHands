@@ -12,10 +12,10 @@ function useDebounceFn(fn, delay) {
   // 否则每次组件渲染都会生成新的防抖函数，导致定时器永远被重置
   const debouncedFn = useCallback((...args) => {
     // 3. 如果已经在计时了，直接清除旧闹钟
-    if (timer.current) {
+    if (timer.current) { 
       clearTimeout(timer.current);
     }
-
+  
     // 4. 开启新闹钟
     timer.current = setTimeout(() => {
       fn(...args);
