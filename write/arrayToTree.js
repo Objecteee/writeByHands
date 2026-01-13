@@ -27,3 +27,49 @@ function arrayToTree(items) {
 
   return result;
 }
+
+
+
+//  FlatNode {
+//   id: number;
+//   parentId: number | null;
+//   name: string;
+// }
+
+//  TreeNode {
+//   id: number;
+//   name: string;
+//   children: TreeNode[];
+// }
+
+// function buildTree(nodes){
+//   // TODO: 补全这段代码
+//   const map=new Map();
+//   const nodeF={}
+//   const res=[]
+//   for(let i=0;i<nodes.length;i++){
+//     if(nodes[i].parentId===null) {
+//         nodeF={id:nodes[i].id,name:nodes[i].name,children:[]}
+//         res.push(nodeF)
+//     }
+//     map.set(nodes[i].id,{id:nodes[i].id,name:nodes[i].name,children:[]});
+//   }
+//   for(let i=0;i<nodes.length;i++){
+//     const parentId=nodes[i].parentId;
+//     if(parentId===nodeF.id){
+//         nodeF.push(map.get(nodes[i].id))
+//     }
+//     if(map.has(parentId)){
+//         map.get(parentId).children.push(map.get(nodes[i].id))
+//     }
+//   }
+//   return res;
+// }
+// const a=[
+//   { id: 1, parentId: null, name: 'Root' },
+//   { id: 2, parentId: 1, name: 'Child 1' },
+//   { id: 3, parentId: 1, name: 'Child 2' },
+//   { id: 4, parentId: 2, name: 'Grandchild' }
+// ]
+
+// console.log(JSON.stringify(buildTree(a)));
